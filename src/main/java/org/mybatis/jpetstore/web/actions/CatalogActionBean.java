@@ -1,5 +1,5 @@
 /*
- *    Copyright 2010-2022 the original author or authors.
+ *    Copyright 2010-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -152,8 +152,15 @@ public class CatalogActionBean extends AbstractActionBean {
    */
   public ForwardResolution viewCategory() {
     if (categoryId != null) {
-      productList = catalogService.getProductListByCategory(categoryId);
-      category = catalogService.getCategory(categoryId);
+      // All 카테고리 조회
+      if ("ALL".equals(categoryId)) {
+        productList = catalogService.getAllProducts();
+        category = new Category(); // All에 대한 임시 Category 객체
+        category.setName("All Products"); // 화면에 표시할 이름
+      } else {
+        productList = catalogService.getProductListByCategory(categoryId);
+        category = catalogService.getCategory(categoryId);
+      }
     }
     return new ForwardResolution(VIEW_CATEGORY);
   }
